@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  jupyterhub:
+    build: jupyterhub
+    image: ${JUPYTERHUB_IMAGE}
+    container_name: jupyterhub
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jupyterhub_data:/srv/jupyterhub
+    environment:
+      - DOCKER_JUPYTER_CONTAINER=${SPARK_IMAGE}
+      - DOCKER_NETWORK_NAME=${COMPOSE_PROJECT_NAME}
+      - HUB_IP
+      - HOST
+    ports:
+      - 8000:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:jupyter"
+    restart: on-failure
+
+  spark:
+    build: spark-notebook
+    image: ${SPARK_IMAGE}
+    container_name: spark-notebook-initial
+    network_mode: none
+    command: echo
+
+  reverse-proxy:
+    image: ${TRAEFIK_IMAGE}
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: on-failure
+
+volumes:
+  jupyterhub_data:
+
+networks:
+  default:
+    external:
+      name: ${COMPOSE_PROJECT_NAME}

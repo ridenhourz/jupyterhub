@@ -1,0 +1,78 @@
+################################################################
+# Global configuration
+################################################################
+
+# Enable debug mode
+debug = false
+
+# Log level
+logLevel = "ERROR"
+
+# Entrypoints to be used by frontends that do not specify any entrypoint.
+# Each frontend can specify its own entrypoints.
+defaultEntryPoints = ["http"]
+
+################################################################
+# Entrypoints configuration
+################################################################
+
+# Entrypoints definition
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+################################################################
+# Traefik logs configuration
+################################################################
+
+# Traefik logs
+# [traefikLog]
+
+# Sets the filepath for the traefik log. If not specified, stdout will be used.
+# Intermediate directories are created if necessary.
+# filePath = "log/traefik.log"
+
+# Format is either "json" or "common".
+# format = "common"
+
+################################################################
+# Access logs configuration
+################################################################
+
+# Enable access logs
+# By default it will write to stdout and produce logs in the textual
+# [accessLog]
+
+# Sets the file path for the access log. If not specified, stdout will be used.
+# Intermediate directories are created if necessary.
+# filePath = "/path/to/log/log.txt"
+
+# Format is either "json" or "common".
+# format = "common"
+
+################################################################
+# API and dashboard configuration
+################################################################
+
+# Enable API and dashboard
+[api]
+  # Enabled Dashboard
+  dashboard = true
+
+################################################################
+# Ping configuration
+################################################################
+
+# Enable ping
+[ping]
+
+  # Name of the related entry point
+  # entryPoint = "traefik"
+
+################################################################
+# Docker configuration backend
+################################################################
+
+# Enable Docker configuration backend
+[docker]
+  domain = "docker.localhost"
